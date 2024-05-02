@@ -1,0 +1,10 @@
+C:\Users\Петр\Desktop\6203_Malyshev_Analyzer\lab1\bin\Debug\lab1.exe.config
+C:\Users\Петр\Desktop\6203_Malyshev_Analyzer\lab1\bin\Debug\lab1.exe
+C:\Users\Петр\Desktop\6203_Malyshev_Analyzer\lab1\bin\Debug\lab1.pdb
+C:\Users\Петр\Desktop\6203_Malyshev_Analyzer\lab1\obj\Debug\Malyshev_analyzer.csproj.AssemblyReference.cache
+C:\Users\Петр\Desktop\6203_Malyshev_Analyzer\lab1\obj\Debug\lab1.Form1.resources
+C:\Users\Петр\Desktop\6203_Malyshev_Analyzer\lab1\obj\Debug\lab1.Properties.Resources.resources
+C:\Users\Петр\Desktop\6203_Malyshev_Analyzer\lab1\obj\Debug\Malyshev_analyzer.csproj.GenerateResource.cache
+C:\Users\Петр\Desktop\6203_Malyshev_Analyzer\lab1\obj\Debug\Malyshev_analyzer.csproj.CoreCompileInputs.cache
+C:\Users\Петр\Desktop\6203_Malyshev_Analyzer\lab1\obj\Debug\lab1.exe
+C:\Users\Петр\Desktop\6203_Malyshev_Analyzer\lab1\obj\Debug\lab1.pdb

@@ -1,0 +1,22 @@
+D:\Analyzer\lab1\bin\Debug\lab1.exe.config
+D:\Analyzer\lab1\bin\Debug\lab1.exe
+D:\Analyzer\lab1\bin\Debug\lab1.pdb
+D:\Analyzer\lab1\obj\Debug\DvoryanchikovAnalyzer.csproj.AssemblyReference.cache
+D:\Analyzer\lab1\obj\Debug\DvoryanchikovAnalyzer.csproj.SuggestedBindingRedirects.cache
+D:\Analyzer\lab1\obj\Debug\Dvoryanchikov.Form1.resources
+D:\Analyzer\lab1\obj\Debug\lab1.Properties.Resources.resources
+D:\Analyzer\lab1\obj\Debug\DvoryanchikovAnalyzer.csproj.GenerateResource.cache
+D:\Analyzer\lab1\obj\Debug\DvoryanchikovAnalyzer.csproj.CoreCompileInputs.cache
+D:\Analyzer\lab1\obj\Debug\lab1.exe
+D:\Analyzer\lab1\obj\Debug\lab1.pdb
+C:\ДВОРЯНЧИКОВ ДМИТРИЙ\АРХИВ\ПРОГРАММИРОВАНИЕ\C#\WindowsForms\Analyzer\lab1\bin\Debug\lab1.exe.config
+C:\ДВОРЯНЧИКОВ ДМИТРИЙ\АРХИВ\ПРОГРАММИРОВАНИЕ\C#\WindowsForms\Analyzer\lab1\bin\Debug\lab1.exe
+C:\ДВОРЯНЧИКОВ ДМИТРИЙ\АРХИВ\ПРОГРАММИРОВАНИЕ\C#\WindowsForms\Analyzer\lab1\bin\Debug\lab1.pdb
+C:\ДВОРЯНЧИКОВ ДМИТРИЙ\АРХИВ\ПРОГРАММИРОВАНИЕ\C#\WindowsForms\Analyzer\lab1\obj\Debug\DvoryanchikovAnalyzer.csproj.AssemblyReference.cache
+C:\ДВОРЯНЧИКОВ ДМИТРИЙ\АРХИВ\ПРОГРАММИРОВАНИЕ\C#\WindowsForms\Analyzer\lab1\obj\Debug\DvoryanchikovAnalyzer.csproj.SuggestedBindingRedirects.cache
+C:\ДВОРЯНЧИКОВ ДМИТРИЙ\АРХИВ\ПРОГРАММИРОВАНИЕ\C#\WindowsForms\Analyzer\lab1\obj\Debug\Dvoryanchikov.Form1.resources
+C:\ДВОРЯНЧИКОВ ДМИТРИЙ\АРХИВ\ПРОГРАММИРОВАНИЕ\C#\WindowsForms\Analyzer\lab1\obj\Debug\lab1.Properties.Resources.resources
+C:\ДВОРЯНЧИКОВ ДМИТРИЙ\АРХИВ\ПРОГРАММИРОВАНИЕ\C#\WindowsForms\Analyzer\lab1\obj\Debug\DvoryanchikovAnalyzer.csproj.GenerateResource.cache
+C:\ДВОРЯНЧИКОВ ДМИТРИЙ\АРХИВ\ПРОГРАММИРОВАНИЕ\C#\WindowsForms\Analyzer\lab1\obj\Debug\DvoryanchikovAnalyzer.csproj.CoreCompileInputs.cache
+C:\ДВОРЯНЧИКОВ ДМИТРИЙ\АРХИВ\ПРОГРАММИРОВАНИЕ\C#\WindowsForms\Analyzer\lab1\obj\Debug\lab1.exe
+C:\ДВОРЯНЧИКОВ ДМИТРИЙ\АРХИВ\ПРОГРАММИРОВАНИЕ\C#\WindowsForms\Analyzer\lab1\obj\Debug\lab1.pdb

@@ -1,0 +1,72 @@
+C:\Users\Dim\Desktop\Паша\лабыв\Тфяг\lab1\lab1\bin\Debug\lab1.exe.config
+C:\Users\Dim\Desktop\Паша\лабыв\Тфяг\lab1\lab1\bin\Debug\lab1.exe
+C:\Users\Dim\Desktop\Паша\лабыв\Тфяг\lab1\lab1\bin\Debug\lab1.pdb
+C:\Users\Dim\Desktop\Паша\лабыв\Тфяг\lab1\lab1\obj\Debug\lab1.csprojAssemblyReference.cache
+C:\Users\Dim\Desktop\Паша\лабыв\Тфяг\lab1\lab1\obj\Debug\lab1.Form1.resources
+C:\Users\Dim\Desktop\Паша\лабыв\Тфяг\lab1\lab1\obj\Debug\lab1.Properties.Resources.resources
+C:\Users\Dim\Desktop\Паша\лабыв\Тфяг\lab1\lab1\obj\Debug\lab1.csproj.GenerateResource.cache
+C:\Users\Dim\Desktop\Паша\лабыв\Тфяг\lab1\lab1\obj\Debug\lab1.csproj.CoreCompileInputs.cache
+C:\Users\Dim\Desktop\Паша\лабыв\Тфяг\lab1\lab1\obj\Debug\lab1.exe
+C:\Users\Dim\Desktop\Паша\лабыв\Тфяг\lab1\lab1\obj\Debug\lab1.pdb
+C:\Users\User\Desktop\универ\лабыв\тфяг\lab1\lab1\bin\Debug\lab1.exe.config
+C:\Users\User\Desktop\универ\лабыв\тфяг\lab1\lab1\bin\Debug\lab1.exe
+C:\Users\User\Desktop\универ\лабыв\тфяг\lab1\lab1\bin\Debug\lab1.pdb
+C:\Users\User\Desktop\универ\лабыв\тфяг\lab1\lab1\obj\Debug\lab1.csprojAssemblyReference.cache
+C:\Users\User\Desktop\универ\лабыв\тфяг\lab1\lab1\obj\Debug\lab1.Form1.resources
+C:\Users\User\Desktop\универ\лабыв\тфяг\lab1\lab1\obj\Debug\lab1.Properties.Resources.resources
+C:\Users\User\Desktop\универ\лабыв\тфяг\lab1\lab1\obj\Debug\lab1.csproj.GenerateResource.cache
+C:\Users\User\Desktop\универ\лабыв\тфяг\lab1\lab1\obj\Debug\lab1.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\универ\лабыв\тфяг\lab1\lab1\obj\Debug\lab1.exe
+C:\Users\User\Desktop\универ\лабыв\тфяг\lab1\lab1\obj\Debug\lab1.pdb
+C:\Users\User\Desktop\lab1\lab1\bin\Debug\lab1.exe.config
+C:\Users\User\Desktop\lab1\lab1\bin\Debug\lab1.exe
+C:\Users\User\Desktop\lab1\lab1\bin\Debug\lab1.pdb
+C:\Users\User\Desktop\lab1\lab1\obj\Debug\lab1.csprojAssemblyReference.cache
+C:\Users\User\Desktop\lab1\lab1\obj\Debug\lab1.Form1.resources
+C:\Users\User\Desktop\lab1\lab1\obj\Debug\lab1.Properties.Resources.resources
+C:\Users\User\Desktop\lab1\lab1\obj\Debug\lab1.csproj.GenerateResource.cache
+C:\Users\User\Desktop\lab1\lab1\obj\Debug\lab1.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\lab1\lab1\obj\Debug\lab1.exe
+C:\Users\User\Desktop\lab1\lab1\obj\Debug\lab1.pdb
+C:\Users\Владислав\Desktop\lab1\lab1\bin\Debug\lab1.exe.config
+C:\Users\Владислав\Desktop\lab1\lab1\obj\Debug\lab1.exe
+C:\Users\Владислав\Desktop\lab1\lab1\obj\Debug\lab1.pdb
+C:\Users\Владислав\Desktop\lab1\lab1\bin\Debug\lab1.exe
+C:\Users\Владислав\Desktop\lab1\lab1\bin\Debug\lab1.pdb
+C:\Users\Владислав\Desktop\lab1\lab1\obj\Debug\lab1.csprojResolveAssemblyReference.cache
+C:\Users\Владислав\Desktop\lab1\lab1\obj\Debug\lab1.Form1.resources
+C:\Users\Владислав\Desktop\lab1\lab1\obj\Debug\lab1.Properties.Resources.resources
+C:\Users\Владислав\Desktop\lab1\lab1\obj\Debug\lab1.csproj.GenerateResource.Cache
+D:\ТФЯиГ\lab1\lab1\bin\Debug\lab1.exe.config
+D:\ТФЯиГ\lab1\lab1\obj\Debug\lab1.exe
+D:\ТФЯиГ\lab1\lab1\obj\Debug\lab1.pdb
+D:\ТФЯиГ\lab1\lab1\bin\Debug\lab1.exe
+D:\ТФЯиГ\lab1\lab1\bin\Debug\lab1.pdb
+D:\ТФЯиГ\lab1\lab1\obj\Debug\lab1.csprojResolveAssemblyReference.cache
+D:\ТФЯиГ\lab1\lab1\obj\Debug\lab1.Form1.resources
+D:\ТФЯиГ\lab1\lab1\obj\Debug\lab1.Properties.Resources.resources
+D:\ТФЯиГ\lab1\lab1\obj\Debug\lab1.csproj.GenerateResource.cache
+D:\ТФЯиГ\lab1\lab1\obj\Debug\lab1.csproj.CoreCompileInputs.cache
+F:\диск G\скинуть обратно на тошибу\ТФЯиГ\lab1\lab1\bin\Debug\lab1.exe.config
+F:\диск G\скинуть обратно на тошибу\ТФЯиГ\lab1\lab1\obj\Debug\lab1.exe
+F:\диск G\скинуть обратно на тошибу\ТФЯиГ\lab1\lab1\obj\Debug\lab1.pdb
+C:\Users\artem\Desktop\Учеба\Теория формальных языков и грамматик\lab1\lab1\bin\Debug\lab1.exe.config
+C:\Users\artem\Desktop\Учеба\Теория формальных языков и грамматик\lab1\lab1\bin\Debug\lab1.exe
+C:\Users\artem\Desktop\Учеба\Теория формальных языков и грамматик\lab1\lab1\bin\Debug\lab1.pdb
+C:\Users\artem\Desktop\Учеба\Теория формальных языков и грамматик\lab1\lab1\obj\Debug\lab1.csprojAssemblyReference.cache
+C:\Users\artem\Desktop\Учеба\Теория формальных языков и грамматик\lab1\lab1\obj\Debug\lab1.Form1.resources
+C:\Users\artem\Desktop\Учеба\Теория формальных языков и грамматик\lab1\lab1\obj\Debug\lab1.Properties.Resources.resources
+C:\Users\artem\Desktop\Учеба\Теория формальных языков и грамматик\lab1\lab1\obj\Debug\lab1.csproj.GenerateResource.cache
+C:\Users\artem\Desktop\Учеба\Теория формальных языков и грамматик\lab1\lab1\obj\Debug\lab1.csproj.CoreCompileInputs.cache
+C:\Users\artem\Desktop\Учеба\Теория формальных языков и грамматик\lab1\lab1\obj\Debug\lab1.exe
+C:\Users\artem\Desktop\Учеба\Теория формальных языков и грамматик\lab1\lab1\obj\Debug\lab1.pdb
+C:\Users\artem\Desktop\lab1\lab1\bin\Debug\lab1.exe.config
+C:\Users\artem\Desktop\lab1\lab1\bin\Debug\lab1.exe
+C:\Users\artem\Desktop\lab1\lab1\bin\Debug\lab1.pdb
+C:\Users\artem\Desktop\lab1\lab1\obj\Debug\lab1.csprojAssemblyReference.cache
+C:\Users\artem\Desktop\lab1\lab1\obj\Debug\lab1.Form1.resources
+C:\Users\artem\Desktop\lab1\lab1\obj\Debug\lab1.Properties.Resources.resources
+C:\Users\artem\Desktop\lab1\lab1\obj\Debug\lab1.csproj.GenerateResource.cache
+C:\Users\artem\Desktop\lab1\lab1\obj\Debug\lab1.csproj.CoreCompileInputs.cache
+C:\Users\artem\Desktop\lab1\lab1\obj\Debug\lab1.exe
+C:\Users\artem\Desktop\lab1\lab1\obj\Debug\lab1.pdb
