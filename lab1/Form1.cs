@@ -12,6 +12,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static Dvoryanchikov.Form1;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Dvoryanchikov
@@ -21,6 +22,13 @@ namespace Dvoryanchikov
         public Form1()
         {
             InitializeComponent();
+            List<int> numi = new List<int>();
+            string[] im = new string[27];
+            // Заполнить список числами с помощью цикла for
+            for (int i = 0; i < im.Length; i++)
+            {
+                listBox2.Items.Add(i);
+            }
         }
         public enum Err
         {
@@ -65,7 +73,11 @@ namespace Dvoryanchikov
             SymbolDotOrSpace, // Ожидается символ . или space
             SymbolAssignSpaceGt, // Ожидается символ = или space или >
             SymbolStop, // Ожидается символ ;
-            SymbolDigit0to9ZeroPointE // Ожидается символ 0|...|9 или.или space или E
+            SymbolDigit0to9ZeroPointE, // Ожидается символ 0|...|9 или.или space или E
+            ErrorIsThen, //Индефикатор не может быть зарезервированным словом!
+            ErrorIsLen8,
+            ErrorIsNumInt32
+
         }
         public class Result
         {
@@ -91,6 +103,12 @@ namespace Dvoryanchikov
                 {
                     switch (_Err)
                     {
+                        case Err.ErrorIsThen:
+                            { return "^Индефикатор не может быть зарезервированным словом!^"; }
+                        case Err.ErrorIsLen8:
+                            { return "^Индефикатор не может быть больше 8 символов^"; }
+                        case Err.ErrorIsNumInt32:
+                            { return "^Число должно быть в диапозоне -32768 – 32767!^"; }
                         case Err.NoError:
                             { return "^Нет ошибок^"; }
                         case Err.RightNotAllow:
@@ -191,7 +209,17 @@ namespace Dvoryanchikov
         }
         public static string S;
         public static int P;
-        public bool logDataGridView = true;
+        public bool logDataGridView1 = true;
+        public bool logDataGridView2 = true;
+
+        public static bool logIsThen = false;
+
+        public static string[] idConstArr;
+        public static string idConstArrDo;
+        public static string exp;
+        public static bool flaf = false;
+
+
         static class CheckEmailAddress
         {
             private enum EnumState
@@ -255,7 +283,7 @@ namespace Dvoryanchikov
                                     if (_Str[_Pos] == 'f')
                                     {
                                         SetError(Err.NoError, i);
-                                        State = EnumState.f3;
+                                        State = EnumState.f4;
                                     }
                                     else
                                     {
@@ -264,20 +292,20 @@ namespace Dvoryanchikov
                                     }
                                     break;
                                 }
-                            case EnumState.f3:
-                                {
-                                    if (_Str[_Pos] == ' ')
-                                    {
-                                        State = EnumState.f4;
-                                    }
-                                    else
-                                    {
-                                        State = EnumState.Error;
-                                        SetError(Err.SymbolSpace, _Pos);
-                                        // err_Pos = i;
-                                    }
-                                    break;
-                                }
+                            //case EnumState.f3:
+                            //    {
+                            //        if (_Str[_Pos] == ' ')
+                            //        {
+                            //            State = EnumState.f4;
+                            //        }
+                            //        else
+                            //        {
+                            //            State = EnumState.Error;
+                            //            SetError(Err.SymbolSpace, _Pos);
+                            //            // err_Pos = i;
+                            //        }
+                            //        break;
+                            //    }
                             case EnumState.f4:
                                 {
                                     if (_Str[_Pos] == ' ')
@@ -287,18 +315,22 @@ namespace Dvoryanchikov
                                     else if (char.IsLetter(_Str[_Pos]) || _Str[_Pos] == '_')
                                     {
                                         State = EnumState.f5;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (char.IsDigit(_Str[_Pos]) && _Str[_Pos] != '0')
                                     {
                                         State = EnumState.f15;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == '0')
                                     {
                                         State = EnumState.f14;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == '-')
                                     {
                                         State = EnumState.f16;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -313,14 +345,17 @@ namespace Dvoryanchikov
                                     if (char.IsLetter(_Str[_Pos]) || _Str[_Pos] == '_' || char.IsDigit(_Str[_Pos]))
                                     {
                                         State = EnumState.f5;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == ' ')
                                     {
                                         State = EnumState.f9;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == '[')
                                     {
                                         State = EnumState.f6;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -335,18 +370,22 @@ namespace Dvoryanchikov
                                     if (char.IsLetter(_Str[_Pos]) || _Str[_Pos] == '_')
                                     {
                                         State = EnumState.f7;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == '0')
                                     {
                                         State = EnumState.f10;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (char.IsDigit(_Str[_Pos]) && _Str[_Pos] != '0')
                                     {
                                         State = EnumState.f13;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == '-')
                                     {
                                         State = EnumState.f11;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -361,10 +400,12 @@ namespace Dvoryanchikov
                                     if (char.IsLetter(_Str[_Pos]) || _Str[_Pos] == '_' || char.IsDigit(_Str[_Pos]))
                                     {
                                         State = EnumState.f7;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == ']')
                                     {
-                                        State = EnumState.f8;
+                                        State = EnumState.f9;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -379,6 +420,7 @@ namespace Dvoryanchikov
                                     if (_Str[_Pos] != '0' && char.IsDigit(_Str[_Pos]))
                                     {
                                         State = EnumState.f13;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -392,7 +434,8 @@ namespace Dvoryanchikov
                                 {
                                     if (_Str[_Pos] == ']')
                                     {
-                                        State = EnumState.f8;
+                                        State = EnumState.f9;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -407,10 +450,12 @@ namespace Dvoryanchikov
                                     if (char.IsDigit(_Str[_Pos]))
                                     {
                                         State = EnumState.f13;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == ']')
                                     {
-                                        State = EnumState.f8;
+                                        State = EnumState.f9;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -420,29 +465,31 @@ namespace Dvoryanchikov
                                     }
                                     break;
                                 }
-                            case EnumState.f8:
-                                {
-                                    if (_Str[_Pos] == ' ')
-                                    {
-                                        State = EnumState.f9;
-                                    }
-                                    else
-                                    {
-                                        State = EnumState.Error;
-                                        SetError(Err.SymbolSpace, _Pos);
-                                        // err_Pos = i;
-                                    }
-                                    break;
-                                }
+                            //case EnumState.f8:
+                            //    {
+                            //        if (_Str[_Pos] == ' ')
+                            //        {
+                            //            State = EnumState.f9;
+                            //        }
+                            //        else
+                            //        {
+                            //            State = EnumState.Error;
+                            //            SetError(Err.SymbolSpace, _Pos);
+                            //            // err_Pos = i;
+                            //        }
+                            //        break;
+                            //    }
                             case EnumState.f15:
                                 {
                                     if (char.IsDigit(_Str[_Pos]))
                                     {
                                         State = EnumState.f15;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == '.')
                                     {
                                         State = EnumState.f18;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == ' ')
                                     {
@@ -451,6 +498,7 @@ namespace Dvoryanchikov
                                     else if (_Str[_Pos] == 'e')
                                     {
                                         State = EnumState.f20;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -466,10 +514,12 @@ namespace Dvoryanchikov
                                     if (char.IsDigit(_Str[_Pos]) && _Str[_Pos] != '0')
                                     {
                                         State = EnumState.f15;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == '0')
                                     {
                                         State = EnumState.f17;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -484,6 +534,7 @@ namespace Dvoryanchikov
                                     if (_Str[_Pos] == '.')
                                     {
                                         State = EnumState.f18;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -498,10 +549,11 @@ namespace Dvoryanchikov
                                     if (_Str[_Pos] == '.')
                                     {
                                         State = EnumState.f18;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == ' ')
                                     {
-                                        State = EnumState.f8;
+                                        State = EnumState.f9;
                                     }
                                     else
                                     {
@@ -516,6 +568,7 @@ namespace Dvoryanchikov
                                     if (char.IsDigit(_Str[_Pos]))
                                     {
                                         State = EnumState.f19;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -531,10 +584,12 @@ namespace Dvoryanchikov
                                     if (char.IsDigit(_Str[_Pos]))
                                     {
                                         State = EnumState.f19;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == 'e')
                                     {
                                         State = EnumState.f20;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == ' ')
                                     {
@@ -552,14 +607,17 @@ namespace Dvoryanchikov
                                     if (char.IsDigit(_Str[_Pos]) && _Str[_Pos] != '0')
                                     {
                                         State = EnumState.f22;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == '-')
                                     {
                                         State = EnumState.f21;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == '0')
                                     {
-                                        State = EnumState.f8;
+                                        State = EnumState.f9;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -573,6 +631,7 @@ namespace Dvoryanchikov
                                     if (char.IsDigit(_Str[_Pos]) && _Str[_Pos] != '0')
                                     {
                                         State = EnumState.f22;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -586,6 +645,7 @@ namespace Dvoryanchikov
                                     if (char.IsDigit(_Str[_Pos]))
                                     {
                                         State = EnumState.f22;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == ' ')
                                     {
@@ -602,7 +662,25 @@ namespace Dvoryanchikov
                             // And or
                             case EnumState.f9:
                                 {
-                                    if (_Str[_Pos] == ' ' && !logf9space)
+                                    if (!HelperClass.isLetLenLimit(idConstArrDo))
+                                    {
+                                        State = EnumState.Error;
+                                        SetError(Err.ErrorIsLen8, _Pos - 1);
+                                    }
+                                    else if (HelperClass.isThen(idConstArrDo))
+                                    {
+                                        State = EnumState.Error;
+                                        SetError(Err.ErrorIsThen, _Pos - 1);
+                                    }
+                                    else if(!HelperClass.isNumIntLimit(idConstArrDo))
+                                    {
+                                        State = EnumState.Error;
+                                        SetError(Err.ErrorIsNumInt32, _Pos - 1);
+                                    }
+
+
+
+                                    else if (_Str[_Pos] == ' ' && !logf9space)
                                     {
                                         logf9space = true;
                                         State = EnumState.f9;
@@ -610,52 +688,69 @@ namespace Dvoryanchikov
                                     else if (_Str[_Pos] == ' ' && logf9space)
                                     {
                                         State = EnumState.f23;
+                                        logIsThen = false;
                                     }
                                     else if (_Str[_Pos] == 'a')
                                     {
                                         State = EnumState.f29;
+                                        logIsThen = false;
                                     }
                                     else if (_Str[_Pos] == 'o')
                                     {
                                         State = EnumState.f30;
+                                        logIsThen = false;
                                     }
                                     else if (_Str[_Pos] == 'n')
                                     {
                                         State = EnumState.f31;
+                                        logIsThen = false;
                                     }
                                     else if (_Str[_Pos] == '~')
                                     {
                                         State = EnumState.f26;
+                                        logIsThen = false;
                                     }
                                     else if (_Str[_Pos] == '#')
                                     {
                                         State = EnumState.f26;
+                                        logIsThen = false;
                                     }
                                     else if (_Str[_Pos] == '&')
                                     {
                                         State = EnumState.f26;
+                                        logIsThen = false;
                                     }
                                     else if (_Str[_Pos] == '<')
                                     {
                                         State = EnumState.f24;
+                                        logIsThen = false;
                                     }
                                     else if (_Str[_Pos] == '>')
                                     {
                                         State = EnumState.f28;
+                                        logIsThen = false;
                                     }
                                     else if (_Str[_Pos] == '=')
                                     {
-                                        State = EnumState.f27;
+                                        State = EnumState.f25;
+                                        logIsThen = false;
                                     }
                                     else if (_Str[_Pos] == 't')
                                     {
                                         State = EnumState.f23;
+                                        logIsThen = false;
                                     }
                                     else
                                     {
                                         State = EnumState.Error;
                                         SetError(Err.SymbolAlnumOrSpecial, _Pos);
                                     }
+                                    if (flaf)
+                                    {
+                                        flaf = false;
+                                        HelperClass.StrNew();
+                                    }
+
                                     break;
                                 }
                             case EnumState.f29:
@@ -796,18 +891,22 @@ namespace Dvoryanchikov
                                     else if (char.IsLetter(_Str[_Pos]) || _Str[_Pos] == '_')
                                     {
                                         State = EnumState.f39;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (char.IsDigit(_Str[_Pos]) && _Str[_Pos] != '0')
                                     {
                                         State = EnumState.f37;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == '0')
                                     {
                                         State = EnumState.f38;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == '-')
                                     {
                                         State = EnumState.f34;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -818,9 +917,10 @@ namespace Dvoryanchikov
                                 }
                             case EnumState.f39:
                                 {
-                                    if (char.IsLetter(_Str[_Pos]) || _Str[_Pos] == '_' || char.IsDigit(_Str[_Pos]))
+                                    if(char.IsLetter(_Str[_Pos]) || _Str[_Pos] == '_' || char.IsDigit(_Str[_Pos]))
                                     {
                                         State = EnumState.f39;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == ' ')
                                     {
@@ -829,6 +929,7 @@ namespace Dvoryanchikov
                                     else if (_Str[_Pos] == '[')
                                     {
                                         State = EnumState.f45;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -842,18 +943,22 @@ namespace Dvoryanchikov
                                     if (char.IsLetter(_Str[_Pos]) || _Str[_Pos] == '_')
                                     {
                                         State = EnumState.f48;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == '0')
                                     {
                                         State = EnumState.f46;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (char.IsDigit(_Str[_Pos]) && _Str[_Pos] != '0')
                                     {
                                         State = EnumState.f50;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == '-')
                                     {
                                         State = EnumState.f49;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -867,10 +972,12 @@ namespace Dvoryanchikov
                                     if (char.IsLetter(_Str[_Pos]) || _Str[_Pos] == '_' || char.IsDigit(_Str[_Pos]))
                                     {
                                         State = EnumState.f48;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == ']')
                                     {
-                                        State = EnumState.f47;
+                                        State = EnumState.f41;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -884,6 +991,7 @@ namespace Dvoryanchikov
                                     if (_Str[_Pos] != '0' && char.IsDigit(_Str[_Pos]))
                                     {
                                         State = EnumState.f50;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -896,7 +1004,8 @@ namespace Dvoryanchikov
                                 {
                                     if (_Str[_Pos] == ']')
                                     {
-                                        State = EnumState.f47;
+                                        State = EnumState.f41;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -910,10 +1019,12 @@ namespace Dvoryanchikov
                                     if (char.IsDigit(_Str[_Pos]))
                                     {
                                         State = EnumState.f50;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == ']')
                                     {
-                                        State = EnumState.f47;
+                                        State = EnumState.f41;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -922,28 +1033,30 @@ namespace Dvoryanchikov
                                     }
                                     break;
                                 }
-                            case EnumState.f47:
-                                {
-                                    if (_Str[_Pos] == ' ')
-                                    {
-                                        State = EnumState.f41;
-                                    }
-                                    else
-                                    {
-                                        State = EnumState.Error;
-                                        SetError(Err.SymbolSpace, _Pos);
-                                    }
-                                    break;
-                                }
+                            //case EnumState.f47:
+                            //    {
+                            //        if (_Str[_Pos] == ' ')
+                            //        {
+                            //            State = EnumState.f41;
+                            //        }
+                            //        else
+                            //        {
+                            //            State = EnumState.Error;
+                            //            SetError(Err.SymbolSpace, _Pos);
+                            //        }
+                            //        break;
+                            //    }
                             case EnumState.f37:
                                 {
                                     if (char.IsDigit(_Str[_Pos]))
                                     {
                                         State = EnumState.f37;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == '.')
                                     {
                                         State = EnumState.f36;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == ' ')
                                     {
@@ -951,7 +1064,8 @@ namespace Dvoryanchikov
                                     }
                                     else if (_Str[_Pos] == 'e')
                                     {
-                                        State = EnumState.f72;
+                                        State = EnumState.f42;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -965,10 +1079,16 @@ namespace Dvoryanchikov
                                     if (char.IsDigit(_Str[_Pos]) && _Str[_Pos] != '0')
                                     {
                                         State = EnumState.f37;
+                                        idConstArrDo += _Str[_Pos];
+                                    }
+                                    else if (_Str[_Pos] == 't')
+                                    {
+                                        State = EnumState.f23;
                                     }
                                     else if (_Str[_Pos] == '0')
                                     {
                                         State = EnumState.f35;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -982,6 +1102,7 @@ namespace Dvoryanchikov
                                     if (_Str[_Pos] == '.')
                                     {
                                         State = EnumState.f36;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == ' ')
                                     {
@@ -999,6 +1120,7 @@ namespace Dvoryanchikov
                                     if (_Str[_Pos] == '.')
                                     {
                                         State = EnumState.f36;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == ' ')
                                     {
@@ -1016,6 +1138,7 @@ namespace Dvoryanchikov
                                     if (char.IsDigit(_Str[_Pos]))
                                     {
                                         State = EnumState.f40;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -1029,10 +1152,12 @@ namespace Dvoryanchikov
                                     if (char.IsDigit(_Str[_Pos]))
                                     {
                                         State = EnumState.f40;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == 'e')
                                     {
                                         State = EnumState.f42;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == ' ')
                                     {
@@ -1050,14 +1175,17 @@ namespace Dvoryanchikov
                                     if (char.IsDigit(_Str[_Pos]) && _Str[_Pos] != '0')
                                     {
                                         State = EnumState.f44;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == '-')
                                     {
                                         State = EnumState.f43;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == '0')
                                     {
-                                        State = EnumState.f47;
+                                        State = EnumState.f41;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -1071,6 +1199,7 @@ namespace Dvoryanchikov
                                     if (char.IsDigit(_Str[_Pos]) && _Str[_Pos] != '0')
                                     {
                                         State = EnumState.f44;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -1084,6 +1213,7 @@ namespace Dvoryanchikov
                                     if (char.IsDigit(_Str[_Pos]))
                                     {
                                         State = EnumState.f44;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == ' ')
                                     {
@@ -1115,7 +1245,22 @@ namespace Dvoryanchikov
                                 }
                             case EnumState.f23:
                                 {
-                                    if (_Str[_Pos] == 'h')
+                                    if (!HelperClass.isLetLenLimit(idConstArrDo))
+                                    {
+                                        State = EnumState.Error;
+                                        SetError(Err.ErrorIsLen8, _Pos - 2);
+                                    }
+                                    else if (HelperClass.isThen(idConstArrDo))
+                                    {
+                                        State = EnumState.Error;
+                                        SetError(Err.ErrorIsThen, _Pos - 2);
+                                    }
+                                    else if (!HelperClass.isNumIntLimit(idConstArrDo))
+                                    {
+                                        State = EnumState.Error;
+                                        SetError(Err.ErrorIsNumInt32, _Pos - 2);
+                                    }
+                                    else if (_Str[_Pos] == 'h')
                                     {
                                         State = EnumState.f51;
                                     }
@@ -1143,7 +1288,7 @@ namespace Dvoryanchikov
                                 {
                                     if (_Str[_Pos] == 'n')
                                     {
-                                        State = EnumState.f53;
+                                        State = EnumState.f54;
                                     }
 
                                     else
@@ -1153,19 +1298,19 @@ namespace Dvoryanchikov
                                     }
                                     break;
                                 }
-                            case EnumState.f53:
-                                {
-                                    if (_Str[_Pos] == ' ')
-                                    {
-                                        State = EnumState.f54;
-                                    }
-                                    else
-                                    {
-                                        State = EnumState.Error;
-                                        SetError(Err.SymbolSpace, _Pos);
-                                    }
-                                    break;
-                                }
+                            //case EnumState.f53:
+                            //    {
+                            //        if (_Str[_Pos] == ' ')
+                            //        {
+                            //            State = EnumState.f54;
+                            //        }
+                            //        else
+                            //        {
+                            //            State = EnumState.Error;
+                            //            SetError(Err.SymbolSpace, _Pos);
+                            //        }
+                            //        break;
+                            //    }
                             case EnumState.f54:
                                 {
                                     if (_Str[_Pos] == ' ')
@@ -1175,6 +1320,7 @@ namespace Dvoryanchikov
                                     else if (_Str[_Pos] == '_' || char.IsLetter(_Str[_Pos]))
                                     {
                                         State = EnumState.f55;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -1192,10 +1338,12 @@ namespace Dvoryanchikov
                                     else if (_Str[_Pos] == '_' || char.IsLetter(_Str[_Pos]) || char.IsDigit(_Str[_Pos]))
                                     {
                                         State = EnumState.f55;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == '[')
                                     {
                                         State = EnumState.f57;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == ':')
                                     {
@@ -1213,18 +1361,22 @@ namespace Dvoryanchikov
                                     if (char.IsLetter(_Str[_Pos]) || _Str[_Pos] == '_')
                                     {
                                         State = EnumState.f58;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == '0')
                                     {
                                         State = EnumState.f60;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (char.IsDigit(_Str[_Pos]) && _Str[_Pos] != '0')
                                     {
                                         State = EnumState.f62;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == '-')
                                     {
                                         State = EnumState.f61;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -1238,10 +1390,11 @@ namespace Dvoryanchikov
                                     if (char.IsLetter(_Str[_Pos]) || _Str[_Pos] == '_' || char.IsDigit(_Str[_Pos]))
                                     {
                                         State = EnumState.f58;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == ']')
                                     {
-                                        State = EnumState.f59;
+                                        State = EnumState.f56;
                                     }
                                     else
                                     {
@@ -1255,6 +1408,7 @@ namespace Dvoryanchikov
                                     if (_Str[_Pos] != '0' && char.IsDigit(_Str[_Pos]))
                                     {
                                         State = EnumState.f62;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -1267,7 +1421,8 @@ namespace Dvoryanchikov
                                 {
                                     if (_Str[_Pos] == ']')
                                     {
-                                        State = EnumState.f59;
+                                        State = EnumState.f56;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -1281,10 +1436,12 @@ namespace Dvoryanchikov
                                     if (char.IsDigit(_Str[_Pos]))
                                     {
                                         State = EnumState.f62;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == ']')
                                     {
-                                        State = EnumState.f59;
+                                        State = EnumState.f56;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -1293,20 +1450,19 @@ namespace Dvoryanchikov
                                     }
                                     break;
                                 }
-                            case EnumState.f59:
-                                {
-                                    if (_Str[_Pos] == ' ')
-                                    {
-                                        State = EnumState.f56;
-                                    }
-                                    else
-                                    {
-                                        State = EnumState.Error;
-                                        SetError(Err.SymbolSpace, _Pos);
-                                    }
-                                    break;
-                                }
-
+                            //case EnumState.f59:
+                            //    {
+                            //        if (_Str[_Pos] == ' ')
+                            //        {
+                            //            State = EnumState.f56;
+                            //        }
+                            //        else
+                            //        {
+                            //            State = EnumState.Error;
+                            //            SetError(Err.SymbolSpace, _Pos);
+                            //        }
+                            //        break;
+                            //    }
                             case EnumState.f56:
                                 {
                                     if (_Str[_Pos] == ' ')
@@ -1326,30 +1482,50 @@ namespace Dvoryanchikov
                                 }
                             case EnumState.f63:
                                 {
-                                    if (_Str[_Pos] == '=')
-                                    {
-                                        State = EnumState.f64;
-                                    }
-                                    else
+                                    if (!HelperClass.isLetLenLimit(idConstArrDo))
                                     {
                                         State = EnumState.Error;
-                                        SetError(Err.SymbolAssign, _Pos);
+                                        SetError(Err.ErrorIsLen8, _Pos - 2);
                                     }
-                                    break;
-                                }
-                            case EnumState.f64:
-                                {
-                                    if (_Str[_Pos] == ' ')
+                                    else if (HelperClass.isThen(idConstArrDo))
+                                    {
+                                        State = EnumState.Error;
+                                        SetError(Err.ErrorIsThen, _Pos - 2);
+                                    }
+                                    else if (!HelperClass.isNumIntLimit(idConstArrDo))
+                                    {
+                                        State = EnumState.Error;
+                                        SetError(Err.ErrorIsNumInt32, _Pos - 2);
+                                    }
+                                    else if (_Str[_Pos] == '=')
                                     {
                                         State = EnumState.f65;
                                     }
                                     else
                                     {
                                         State = EnumState.Error;
-                                        SetError(Err.SymbolSpace, _Pos);
+                                        SetError(Err.SymbolAssign, _Pos);
+                                    }
+                                    if (flaf)
+                                    {
+                                        flaf = false;
+                                        HelperClass.StrNew();
                                     }
                                     break;
                                 }
+                            //case EnumState.f64:
+                            //    {
+                            //        if (_Str[_Pos] == ' ')
+                            //        {
+                            //            State = EnumState.f65;
+                            //        }
+                            //        else
+                            //        {
+                            //            State = EnumState.Error;
+                            //            SetError(Err.SymbolSpace, _Pos);
+                            //        }
+                            //        break;
+                            //    }
                             case EnumState.f65:
                                 {
                                     if (_Str[_Pos] == ' ')
@@ -1359,18 +1535,22 @@ namespace Dvoryanchikov
                                     else if (char.IsLetter(_Str[_Pos]) || _Str[_Pos] == '_')
                                     {
                                         State = EnumState.f76;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (char.IsDigit(_Str[_Pos]) && _Str[_Pos] != '0')
                                     {
                                         State = EnumState.f75;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == '0')
                                     {
                                         State = EnumState.f66;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == '-')
                                     {
                                         State = EnumState.f68;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -1381,9 +1561,10 @@ namespace Dvoryanchikov
                                 }
                             case EnumState.f76:
                                 {
-                                    if (char.IsLetter(_Str[_Pos]) || _Str[_Pos] == '_' || char.IsDigit(_Str[_Pos]))
+                                    if(char.IsLetter(_Str[_Pos]) || _Str[_Pos] == '_' || char.IsDigit(_Str[_Pos]))
                                     {
                                         State = EnumState.f76;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == ' ')
                                     {
@@ -1392,6 +1573,7 @@ namespace Dvoryanchikov
                                     else if (_Str[_Pos] == '[')
                                     {
                                         State = EnumState.f77;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -1405,18 +1587,22 @@ namespace Dvoryanchikov
                                     if (char.IsLetter(_Str[_Pos]) || _Str[_Pos] == '_')
                                     {
                                         State = EnumState.f78;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == '0')
                                     {
                                         State = EnumState.f79;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (char.IsDigit(_Str[_Pos]) && _Str[_Pos] != '0')
                                     {
                                         State = EnumState.f82;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == '-')
                                     {
                                         State = EnumState.f80;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -1430,10 +1616,12 @@ namespace Dvoryanchikov
                                     if (char.IsLetter(_Str[_Pos]) || _Str[_Pos] == '_' || char.IsDigit(_Str[_Pos]))
                                     {
                                         State = EnumState.f78;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == ']')
                                     {
-                                        State = EnumState.f81;
+                                        State = EnumState.f67;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -1447,6 +1635,7 @@ namespace Dvoryanchikov
                                     if (_Str[_Pos] != '0' && char.IsDigit(_Str[_Pos]))
                                     {
                                         State = EnumState.f82;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -1459,7 +1648,8 @@ namespace Dvoryanchikov
                                 {
                                     if (_Str[_Pos] == ']')
                                     {
-                                        State = EnumState.f81;
+                                        State = EnumState.f67;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -1473,10 +1663,12 @@ namespace Dvoryanchikov
                                     if (char.IsDigit(_Str[_Pos]))
                                     {
                                         State = EnumState.f82;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == ']')
                                     {
-                                        State = EnumState.f81;
+                                        State = EnumState.f67;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -1485,36 +1677,40 @@ namespace Dvoryanchikov
                                     }
                                     break;
                                 }
-                            case EnumState.f81:
-                                {
-                                    if (_Str[_Pos] == ' ')
-                                    {
-                                        State = EnumState.f67;
-                                    }
-                                    else
-                                    {
-                                        State = EnumState.Error;
-                                        SetError(Err.SymbolSpace, _Pos);
-                                    }
-                                    break;
-                                }
+                            //case EnumState.f81:
+                            //    {
+                            //        if (_Str[_Pos] == ' ')
+                            //        {
+                            //            State = EnumState.f67;
+                            //        }
+                            //        else
+                            //        {
+                            //            State = EnumState.Error;
+                            //            SetError(Err.SymbolSpace, _Pos);
+                            //        }
+                            //        break;
+                            //    }
                             case EnumState.f75:
                                 {
                                     if (char.IsDigit(_Str[_Pos]))
                                     {
                                         State = EnumState.f75;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == '.')
                                     {
                                         State = EnumState.f70;
+                                        idConstArrDo += _Str[_Pos];
                                     }
-                                    else if (_Str[_Pos] == ' ')
+                                    else if (char.IsDigit(_Str[_Pos]))
                                     {
                                         State = EnumState.f67;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == 'e')
                                     {
                                         State = EnumState.f72;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -1528,10 +1724,12 @@ namespace Dvoryanchikov
                                     if (char.IsDigit(_Str[_Pos]) && _Str[_Pos] != '0')
                                     {
                                         State = EnumState.f75;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == '0')
                                     {
                                         State = EnumState.f69;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -1545,6 +1743,7 @@ namespace Dvoryanchikov
                                     if (char.IsDigit(_Str[_Pos]))
                                     {
                                         State = EnumState.f71;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -1558,6 +1757,7 @@ namespace Dvoryanchikov
                                     if (_Str[_Pos] == '.')
                                     {
                                         State = EnumState.f70;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == ' ')
                                     {
@@ -1575,6 +1775,7 @@ namespace Dvoryanchikov
                                     if (_Str[_Pos] == '.')
                                     {
                                         State = EnumState.f70;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -1588,10 +1789,12 @@ namespace Dvoryanchikov
                                     if (char.IsDigit(_Str[_Pos]))
                                     {
                                         State = EnumState.f71;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == 'e')
                                     {
                                         State = EnumState.f72;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == ' ')
                                     {
@@ -1609,14 +1812,17 @@ namespace Dvoryanchikov
                                     if (char.IsDigit(_Str[_Pos]) && _Str[_Pos] != '0')
                                     {
                                         State = EnumState.f74;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == '-')
                                     {
                                         State = EnumState.f73;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == '0')
                                     {
                                         State = EnumState.f81;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -1630,6 +1836,7 @@ namespace Dvoryanchikov
                                     if (char.IsDigit(_Str[_Pos]) && _Str[_Pos] != '0')
                                     {
                                         State = EnumState.f74;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else
                                     {
@@ -1643,6 +1850,7 @@ namespace Dvoryanchikov
                                     if (char.IsDigit(_Str[_Pos]))
                                     {
                                         State = EnumState.f74;
+                                        idConstArrDo += _Str[_Pos];
                                     }
                                     else if (_Str[_Pos] == ' ')
                                     {
@@ -1674,7 +1882,22 @@ namespace Dvoryanchikov
                                 }
                             case EnumState.f83:
                                 {
-                                    if (_Str[_Pos] == 'n')
+                                    if (!HelperClass.isLetLenLimit(idConstArrDo))
+                                    {
+                                        State = EnumState.Error;
+                                        SetError(Err.ErrorIsLen8, _Pos - 2);
+                                    }
+                                    else if (HelperClass.isThen(idConstArrDo))
+                                    {
+                                        State = EnumState.Error;
+                                        SetError(Err.ErrorIsThen, _Pos - 2);
+                                    }
+                                    else if (!HelperClass.isNumIntLimit(idConstArrDo))
+                                    {
+                                        State = EnumState.Error;
+                                        SetError(Err.ErrorIsNumInt32, _Pos - 2);
+                                    }
+                                    else if(_Str[_Pos] == 'n')
                                     {
                                         State = EnumState.f84;
                                     }
@@ -1686,6 +1909,11 @@ namespace Dvoryanchikov
                                     {
                                         State = EnumState.Error;
                                         SetError(Err.SymbolNL, _Pos);
+                                    }
+                                    if (flaf)
+                                    {
+                                        flaf = false;
+                                        HelperClass.StrNew();
                                     }
                                     break;
                                 }
@@ -1793,8 +2021,16 @@ namespace Dvoryanchikov
         }
 
 
+
         private void button1_Click(object sender, EventArgs e)
         {
+            string[] Let = null;
+            string[] NumInt = null;
+            string[] NumDouble = null;
+            string[] NumDoubleE = null;
+
+            idConstArr = null;
+            idConstArrDo = "";
             Result r = CheckEmailAddress.Check(TextBox_Chain.Text);
             if (r.ErrPosition != -1)
             {
@@ -1802,62 +2038,112 @@ namespace Dvoryanchikov
                 TextBox_Chain.Focus();
             }
             label2.Text = r.ErrMessage;
-            //label4.Text = "S = "+S.Length.ToString();
-            //label5.Text = "P = "+P.ToString();
+
+
+
 
             List<string> identifiers = new List<string>();
-
-            //listBox1.Items.Clear();
-
-            string[] idn = Identifier(S);
-            string[][] idnn = IdentifierTypeA1(idn);
-
-            if (isThen(idnn[1])) label2.Text = "Индефикатор не может быть зарезервированным словом!";
-            else if (isNum(idnn[0])) label2.Text = "Число должно быть в диапозоне -32768 – 32767!";
-            else if (lenInd(idnn[1])) label2.Text = "Индефикатор не может быть > 8 символов!";
-
-            string[][] CardReal = letWordCardReal(idnn[1]);
-            string[] Real = new string[CardReal[0].Length + idnn[0].Length];
-
-            int countRR = 0;
-            while (countRR < Real.Length)
+            listBox1.Items.Clear();
+            if (idConstArr != null)
             {
-                for (int i=0; i< CardReal[0].Length; i++)
+                idConstArr = idConstArr.Where(word => !string.IsNullOrEmpty(word)).ToArray();
+                listBox1.Items.AddRange(idConstArr);
+            }
+            if (idConstArr != null)
+            {
+                for (int i = 0; i < idConstArr.Length; i++)
                 {
-                    Real[countRR] = CardReal[0][i];
-                    countRR++;
-                }
-                for (int i = 0; i < idnn[0].Length; i++)
-                {
-                    Real[countRR] = idnn[0][i];
-                    countRR++;
+                    if (HelperClass.isNumDoubleE(idConstArr[i]))
+                    {
+                        NumDoubleE = HelperClass.addIdConstArr(NumDoubleE, idConstArr[i]);
+                    }
+                    else if (HelperClass.isLet(idConstArr[i]))
+                    {
+                        Let = HelperClass.addIdConstArr(Let, idConstArr[i]);
+                    }
+                    else if (HelperClass.isNumInt(idConstArr[i]))
+                    {
+                        NumInt = HelperClass.addIdConstArr(NumInt, idConstArr[i]);
+                    }
+                    else if (HelperClass.isNumDouble(idConstArr[i]))
+                    {
+                        NumDouble = HelperClass.addIdConstArr(NumDouble, idConstArr[i]);
+                    }
+
                 }
             }
+            //if (Let != null)
+            //{
+            //    listBox1.Items.AddRange(Let);
+            //}
 
-            if (logDataGridView)
+            if (logDataGridView1)
             {
-                logDataGridView = false;
+                logDataGridView1 = false;
                 dataGridView1.Columns.Add("Идентификаторы и константы", "Идентификаторы и константы");
                 dataGridView1.Columns.Add("Тип", "Тип");
             }
 
             dataGridView1.Rows.Clear();
 
-
-            if (!isThen(idnn[1]) && !isNum(idnn[0]) && !lenInd(idnn[1]))
-            {
-                //listBox1.Items.AddRange(Real.ToArray());
-                //listBox1.Items.AddRange(CardReal[0].ToArray());
-                //listBox1.Items.AddRange(CardReal[0].ToArray());
-                for (int i = 0; i < Real.Length; i++)
+            if (Let != null) { 
+                for (int i = 0; i < Let.Length; i++)
                 {
-                    dataGridView1.Rows.Add(Real[i], "REAL");
-                }
-                for (int i = 0; i < CardReal[1].Length; i++)
-                {
-                    dataGridView1.Rows.Add(CardReal[1][i], "CARDINAL");
+                    dataGridView1.Rows.Add(Let[i], "id");
                 }
             }
+            if (NumInt != null)
+            {
+                for (int i = 0; i < NumInt.Length; i++)
+                {
+                    dataGridView1.Rows.Add(NumInt[i], "int-numb");
+                }
+            }
+            if (NumDouble != null)
+            {
+                for (int i = 0; i < NumDouble.Length; i++)
+                {
+                    dataGridView1.Rows.Add(NumDouble[i], "fix-point-numb");
+                }
+            }
+            if (NumDoubleE != null)
+            {
+                for (int i = 0; i < NumDoubleE.Length; i++)
+                {
+                    dataGridView1.Rows.Add(NumDoubleE[i], "real-numb");
+                }
+            }
+
+            if (logDataGridView2)
+            {
+                logDataGridView2 = false;
+                dataGridView2.Columns.Add("Идентификаторы и константы", "Идентификаторы и константы");
+                dataGridView2.Columns.Add("CARDINAL/REAL", "CARDINAL/REAL");
+            }
+            dataGridView2.Rows.Clear();
+
+            if (NumInt != null)
+            {
+                for (int i = 0; i < NumInt.Length; i++)
+                {
+                    dataGridView2.Rows.Add(NumInt[i], "CARDINAL");
+                }
+            }
+            if (NumDouble != null)
+            {
+                for (int i = 0; i < NumDouble.Length; i++)
+                {
+                    dataGridView2.Rows.Add(NumDouble[i], "REAL");
+                }
+            }
+            if (NumDoubleE != null)
+            {
+                for (int i = 0; i < NumDoubleE.Length; i++)
+                {
+                    dataGridView2.Rows.Add(NumDoubleE[i], "REAL");
+                }
+            }
+
         }
 
         public string[] Identifier(string input)
@@ -1906,19 +2192,7 @@ namespace Dvoryanchikov
             return result;
         }
 
-        public bool isThen(string[] input)
-        {
-            bool result = false;
-            string[] reservWord = {"if", "then", "elsif", "end", "or", "not", "and" };
-            for (int i = 0; i < input.Length; i++)
-            {
-                for (int j=0; j < reservWord.Length; j++)
-                {
-                    if (input[i] == reservWord[j]) result = true;
-                }
-            }
-            return result;
-        }
+
 
         public bool isNum(string[] input)
         {
@@ -1998,6 +2272,151 @@ namespace Dvoryanchikov
         private void TextBox_Chain_TextChanged(object sender, EventArgs e)
         {
 
+        }
+        
+        public class HelperClass
+        {
+            public static string[] addIdConstArr(string[] arr, string num)
+            {
+                string[] returnArr = null;
+                if (arr != null) { 
+                    returnArr = new string[arr.Length + 1];
+                    for (int i = 0; i < arr.Length; i++)
+                    {
+                        returnArr[i] = arr[i];
+                    }
+                    returnArr[returnArr.Length - 1] = num;
+                }
+                if (arr == null && num.Length != 0)
+                {
+                    returnArr = new string[1];
+                    returnArr[returnArr.Length - 1] = num.Trim();
+                }
+                return returnArr;
+            }
+            public static bool isThen(string num)
+            {
+                bool result = false;
+                string[] reservWord = { "if", "then", "elsif", "end", "or", "not", "and" };
+                for (int j = 0; j < reservWord.Length; j++)
+                {
+                    if (num.Trim() == reservWord[j]) result = true;
+                }
+                if(result == false)
+                {
+                    if (!flaf)
+                    {
+                        idConstArr = HelperClass.addIdConstArr(idConstArr, idConstArrDo);
+                        idConstArrDo = "";
+                        flaf = true;
+                    }
+                }
+                return result;
+            }
+            public static bool isNumInt(string str)
+            {
+                // Проверка на пустую строку
+                if (string.IsNullOrEmpty(str))
+                {
+                    return false;
+                }
+
+                // Проверка на наличие нецифровых символов
+                foreach (char c in str)
+                {
+                    if (!char.IsDigit(c))
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            public static bool isNumDouble(string str)
+            {
+                // Проверка наличия знака
+                if (str[0] == '+' || str[0] == '-')
+                {
+                    str = str.Substring(1);
+                }
+
+                // Разделение на целую и дробную части
+                string[] parts = str.Split('.');
+
+                // Проверка наличия только одной точки
+                if (parts.Length != 2)
+                {
+                    return false;
+                }
+
+                // Проверка, являются ли целая и дробная части допустимыми целыми числами
+                int integerPart;
+                int decimalPart;
+                if (!int.TryParse(parts[0], out integerPart) || !int.TryParse(parts[1], out decimalPart))
+                {
+                    return false;
+                }
+
+                // Проверка, что дробная часть не пустая
+                if (decimalPart == 0)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+            public static bool isNumDoubleE(string str)
+            {
+                //string pattern = @"[0-9]+\.[0-9]+e[+-]?[0-9]+";
+
+                //Match match = Regex.Match(str, pattern);
+                if (str.Contains('e'))
+                {
+                    //double number = double.Parse(match.Value);
+                    return true;
+                }
+                return false;
+            }
+            public static bool isLet(string str)
+            {
+                return (str.Any(char.IsLetter) && str.Any(char.IsDigit) && str.Contains("_")) || (str.Any(char.IsLetter) || str.Contains("_")) || (str.Contains("_"));
+        }
+            public static bool isNumIntLimit(string str)
+            {
+                if (isNumInt(str.Trim()))
+                {
+                    int number;
+                    if (int.TryParse(str.Trim(), out number))
+                    {
+                        if (number > 32767 || number < -32767) return false;
+                    }
+                }
+                if (!flaf)
+                {
+                    idConstArr = HelperClass.addIdConstArr(idConstArr, idConstArrDo);
+                    idConstArrDo = "";
+                    flaf = true;
+                }
+                return true;
+            }
+
+            public static bool isLetLenLimit(string str)
+            {
+                if (str.Length > 8) {
+                    return false;
+                }
+                if (!flaf)
+                {
+                    idConstArr = HelperClass.addIdConstArr(idConstArr, idConstArrDo);
+                    idConstArrDo = "";
+                    flaf = true;
+                }
+                return true;
+            }
+            public static void StrNew()
+            {
+                idConstArr = HelperClass.addIdConstArr(idConstArr, idConstArrDo);
+                idConstArrDo = "";
+            }
         }
     }
 }
