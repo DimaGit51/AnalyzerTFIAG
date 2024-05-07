@@ -212,11 +212,12 @@ namespace Dvoryanchikov
         public bool logDataGridView1 = true;
         public bool logDataGridView2 = true;
 
-        public static bool logIsThen = false;
+        public static bool logEnd = false;
 
         public static string[] idConstArr;
         public static string idConstArrDo;
-        public static string exp;
+        public static string exp1;
+        public static string exp2;
         public static bool flaf = false;
 
 
@@ -681,65 +682,50 @@ namespace Dvoryanchikov
 
 
 
-                                    else if (_Str[_Pos] == ' ' && !logf9space)
+                                    else if (_Str[_Pos] == ' ')
                                     {
                                         logf9space = true;
                                         State = EnumState.f9;
                                     }
-                                    else if (_Str[_Pos] == ' ' && logf9space)
-                                    {
-                                        State = EnumState.f23;
-                                        logIsThen = false;
-                                    }
                                     else if (_Str[_Pos] == 'a')
                                     {
                                         State = EnumState.f29;
-                                        logIsThen = false;
                                     }
                                     else if (_Str[_Pos] == 'o')
                                     {
                                         State = EnumState.f30;
-                                        logIsThen = false;
                                     }
                                     else if (_Str[_Pos] == 'n')
                                     {
                                         State = EnumState.f31;
-                                        logIsThen = false;
                                     }
                                     else if (_Str[_Pos] == '~')
                                     {
                                         State = EnumState.f26;
-                                        logIsThen = false;
                                     }
                                     else if (_Str[_Pos] == '#')
                                     {
                                         State = EnumState.f26;
-                                        logIsThen = false;
                                     }
                                     else if (_Str[_Pos] == '&')
                                     {
                                         State = EnumState.f26;
-                                        logIsThen = false;
                                     }
                                     else if (_Str[_Pos] == '<')
                                     {
                                         State = EnumState.f24;
-                                        logIsThen = false;
                                     }
                                     else if (_Str[_Pos] == '>')
                                     {
                                         State = EnumState.f28;
-                                        logIsThen = false;
                                     }
                                     else if (_Str[_Pos] == '=')
                                     {
                                         State = EnumState.f25;
-                                        logIsThen = false;
                                     }
                                     else if (_Str[_Pos] == 't')
                                     {
                                         State = EnumState.f23;
-                                        logIsThen = false;
                                     }
                                     else
                                     {
@@ -1228,7 +1214,23 @@ namespace Dvoryanchikov
                                 }
                             case EnumState.f41:
                                 {
-                                    if (_Str[_Pos] == 't')
+                                    if (HelperClass.isThen(idConstArrDo))
+                                    {
+                                        State = EnumState.Error;
+                                        SetError(Err.ErrorIsThen, _Pos - 1);
+                                    }
+                                    else if (!HelperClass.isLetLenLimit(idConstArrDo))
+                                    {
+                                        State = EnumState.Error;
+                                        SetError(Err.ErrorIsLen8, _Pos - 1);
+                                    }
+
+                                    else if (!HelperClass.isNumIntLimit(idConstArrDo))
+                                    {
+                                        State = EnumState.Error;
+                                        SetError(Err.ErrorIsNumInt32, _Pos - 1);
+                                    }
+                                    else if (_Str[_Pos] == 't')
                                     {
                                         State = EnumState.f23;
                                     }
@@ -1241,27 +1243,16 @@ namespace Dvoryanchikov
                                         State = EnumState.Error;
                                         SetError(Err.SymbolTorSpace, _Pos);
                                     }
+                                    if (flaf)
+                                    {
+                                        flaf = false;
+                                        HelperClass.StrNew();
+                                    }
                                     break;
                                 }
                             case EnumState.f23:
                                 {
-                                    if (HelperClass.isThen(idConstArrDo))
-                                    {
-                                        State = EnumState.Error;
-                                        SetError(Err.ErrorIsThen, _Pos - 2);
-                                    }
-                                    else if (!HelperClass.isLetLenLimit(idConstArrDo))
-                                    {
-                                        State = EnumState.Error;
-                                        SetError(Err.ErrorIsLen8, _Pos - 2);
-                                    }
-
-                                    else if (!HelperClass.isNumIntLimit(idConstArrDo))
-                                    {
-                                        State = EnumState.Error;
-                                        SetError(Err.ErrorIsNumInt32, _Pos - 2);
-                                    }
-                                    else if (_Str[_Pos] == 'h')
+                                    if (_Str[_Pos] == 'h')
                                     {
                                         State = EnumState.f51;
                                     }
@@ -1269,11 +1260,6 @@ namespace Dvoryanchikov
                                     {
                                         State = EnumState.Error;
                                         SetError(Err.SymbolH, _Pos);
-                                    }
-                                    if (flaf)
-                                    {
-                                        flaf = false;
-                                        HelperClass.StrNew();
                                     }
                                     break;
                                 }
@@ -1471,23 +1457,6 @@ namespace Dvoryanchikov
                             //    }
                             case EnumState.f56:
                                 {
-                                    if (_Str[_Pos] == ' ')
-                                    {
-                                        State = EnumState.f56;
-                                    }
-                                    else if (_Str[_Pos] == ':')
-                                    {
-                                        State = EnumState.f63;
-                                    }
-                                    else
-                                    {
-                                        State = EnumState.Error;
-                                        SetError(Err.SymbolColonOrSpace, _Pos);
-                                    }
-                                    break;
-                                }
-                            case EnumState.f63:
-                                {
                                     if (!HelperClass.isLetLenLimit(idConstArrDo))
                                     {
                                         State = EnumState.Error;
@@ -1503,7 +1472,29 @@ namespace Dvoryanchikov
                                         State = EnumState.Error;
                                         SetError(Err.ErrorIsNumInt32, _Pos - 2);
                                     }
-                                    else if (_Str[_Pos] == '=')
+                                    if (_Str[_Pos] == ' ')
+                                    {
+                                        State = EnumState.f56;
+                                    }
+                                    else if (_Str[_Pos] == ':')
+                                    {
+                                        State = EnumState.f63;
+                                    }
+                                    else
+                                    {
+                                        State = EnumState.Error;
+                                        SetError(Err.SymbolColonOrSpace, _Pos);
+                                    }
+                                    if (flaf)
+                                    {
+                                        flaf = false;
+                                        HelperClass.StrNew();
+                                    }
+                                    break;
+                                }
+                            case EnumState.f63:
+                                {
+                                    if (_Str[_Pos] == '=')
                                     {
                                         State = EnumState.f65;
                                     }
@@ -1511,11 +1502,6 @@ namespace Dvoryanchikov
                                     {
                                         State = EnumState.Error;
                                         SetError(Err.SymbolAssign, _Pos);
-                                    }
-                                    if (flaf)
-                                    {
-                                        flaf = false;
-                                        HelperClass.StrNew();
                                     }
                                     break;
                                 }
@@ -1943,6 +1929,7 @@ namespace Dvoryanchikov
                                     {
                                         State = EnumState.F;
                                         SetError(Err.NoError, 0);
+                                        logEnd = true;
                                         //err_Mes = "^Ошибок не обнаружено^";
 
                                     }
@@ -2015,7 +2002,9 @@ namespace Dvoryanchikov
                     }
                     if (State != EnumState.F) _Pos++;
                 }
-                //if (_Pos < _Str.Length - 1) SetError(Err.RightNotAllow, _Pos + 1);
+                exp1 = _Pos.ToString();
+                exp2 = _Str.Length.ToString();
+                if (_Pos < _Str.Length - 2 && State != EnumState.Error) SetError(Err.RightNotAllow, _Pos + 1);
                 return (State == EnumState.F);
             }
 
@@ -2150,7 +2139,8 @@ namespace Dvoryanchikov
                     dataGridView2.Rows.Add(NumDoubleE[i], "REAL");
                 }
             }
-
+            label1.Text = exp1;
+            label3.Text = exp1;
         }
 
         public string[] Identifier(string input)
