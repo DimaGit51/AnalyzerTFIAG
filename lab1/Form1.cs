@@ -662,16 +662,17 @@ namespace Dvoryanchikov
                             // And or
                             case EnumState.f9:
                                 {
-                                    if (!HelperClass.isLetLenLimit(idConstArrDo))
-                                    {
-                                        State = EnumState.Error;
-                                        SetError(Err.ErrorIsLen8, _Pos - 1);
-                                    }
-                                    else if (HelperClass.isThen(idConstArrDo))
+                                    if (HelperClass.isThen(idConstArrDo))
                                     {
                                         State = EnumState.Error;
                                         SetError(Err.ErrorIsThen, _Pos - 1);
                                     }
+                                    else if(!HelperClass.isLetLenLimit(idConstArrDo))
+                                    {
+                                        State = EnumState.Error;
+                                        SetError(Err.ErrorIsLen8, _Pos - 1);
+                                    }
+ 
                                     else if(!HelperClass.isNumIntLimit(idConstArrDo))
                                     {
                                         State = EnumState.Error;
@@ -750,7 +751,6 @@ namespace Dvoryanchikov
                                         flaf = false;
                                         HelperClass.StrNew();
                                     }
-
                                     break;
                                 }
                             case EnumState.f29:
@@ -1245,16 +1245,17 @@ namespace Dvoryanchikov
                                 }
                             case EnumState.f23:
                                 {
-                                    if (!HelperClass.isLetLenLimit(idConstArrDo))
-                                    {
-                                        State = EnumState.Error;
-                                        SetError(Err.ErrorIsLen8, _Pos - 2);
-                                    }
-                                    else if (HelperClass.isThen(idConstArrDo))
+                                    if (HelperClass.isThen(idConstArrDo))
                                     {
                                         State = EnumState.Error;
                                         SetError(Err.ErrorIsThen, _Pos - 2);
                                     }
+                                    else if (!HelperClass.isLetLenLimit(idConstArrDo))
+                                    {
+                                        State = EnumState.Error;
+                                        SetError(Err.ErrorIsLen8, _Pos - 2);
+                                    }
+
                                     else if (!HelperClass.isNumIntLimit(idConstArrDo))
                                     {
                                         State = EnumState.Error;
@@ -1268,6 +1269,11 @@ namespace Dvoryanchikov
                                     {
                                         State = EnumState.Error;
                                         SetError(Err.SymbolH, _Pos);
+                                    }
+                                    if (flaf)
+                                    {
+                                        flaf = false;
+                                        HelperClass.StrNew();
                                     }
                                     break;
                                 }
@@ -1702,7 +1708,7 @@ namespace Dvoryanchikov
                                         State = EnumState.f70;
                                         idConstArrDo += _Str[_Pos];
                                     }
-                                    else if (char.IsDigit(_Str[_Pos]))
+                                    else if (_Str[_Pos] == ' ')
                                     {
                                         State = EnumState.f67;
                                         idConstArrDo += _Str[_Pos];
@@ -1865,7 +1871,22 @@ namespace Dvoryanchikov
                                 }
                             case EnumState.f67:
                                 {
-                                    if (_Str[_Pos] == ' ')
+                                    if (!HelperClass.isNumIntLimit(idConstArrDo))
+                                    {
+                                        State = EnumState.Error;
+                                        SetError(Err.ErrorIsNumInt32, _Pos - 1);
+                                    }
+                                    else if (HelperClass.isThen(idConstArrDo))
+                                    {
+                                        State = EnumState.Error;
+                                        SetError(Err.ErrorIsThen, _Pos - 1);
+                                    }
+                                    else if (!HelperClass.isLetLenLimit(idConstArrDo))
+                                    {
+                                        State = EnumState.Error;
+                                        SetError(Err.ErrorIsLen8, _Pos - 1);
+                                    }
+                                    else if(_Str[_Pos] == ' ')
                                     {
                                         State = EnumState.f67;
                                     }
@@ -1878,26 +1899,16 @@ namespace Dvoryanchikov
                                         State = EnumState.Error;
                                         SetError(Err.SymbolEOrSpace, _Pos);
                                     }
+                                    if (flaf)
+                                    {
+                                        flaf = false;
+                                        HelperClass.StrNew();
+                                    }
                                     break;
                                 }
                             case EnumState.f83:
                                 {
-                                    if (!HelperClass.isLetLenLimit(idConstArrDo))
-                                    {
-                                        State = EnumState.Error;
-                                        SetError(Err.ErrorIsLen8, _Pos - 2);
-                                    }
-                                    else if (HelperClass.isThen(idConstArrDo))
-                                    {
-                                        State = EnumState.Error;
-                                        SetError(Err.ErrorIsThen, _Pos - 2);
-                                    }
-                                    else if (!HelperClass.isNumIntLimit(idConstArrDo))
-                                    {
-                                        State = EnumState.Error;
-                                        SetError(Err.ErrorIsNumInt32, _Pos - 2);
-                                    }
-                                    else if(_Str[_Pos] == 'n')
+                                    if(_Str[_Pos] == 'n')
                                     {
                                         State = EnumState.f84;
                                     }
@@ -1910,11 +1921,7 @@ namespace Dvoryanchikov
                                         State = EnumState.Error;
                                         SetError(Err.SymbolNL, _Pos);
                                     }
-                                    if (flaf)
-                                    {
-                                        flaf = false;
-                                        HelperClass.StrNew();
-                                    }
+
                                     break;
                                 }
                             case EnumState.f84:
@@ -2306,8 +2313,6 @@ namespace Dvoryanchikov
                 {
                     if (!flaf)
                     {
-                        idConstArr = HelperClass.addIdConstArr(idConstArr, idConstArrDo);
-                        idConstArrDo = "";
                         flaf = true;
                     }
                 }
@@ -2392,8 +2397,6 @@ namespace Dvoryanchikov
                 }
                 if (!flaf)
                 {
-                    idConstArr = HelperClass.addIdConstArr(idConstArr, idConstArrDo);
-                    idConstArrDo = "";
                     flaf = true;
                 }
                 return true;
@@ -2406,8 +2409,6 @@ namespace Dvoryanchikov
                 }
                 if (!flaf)
                 {
-                    idConstArr = HelperClass.addIdConstArr(idConstArr, idConstArrDo);
-                    idConstArrDo = "";
                     flaf = true;
                 }
                 return true;
