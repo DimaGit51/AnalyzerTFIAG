@@ -2002,8 +2002,8 @@ namespace Dvoryanchikov
                     }
                     if (State != EnumState.F) _Pos++;
                 }
-                exp1 = _Pos.ToString();
-                exp2 = _Str.Length.ToString();
+                //exp1 = _Pos.ToString();
+                //exp2 = _Str.Length.ToString();
                 if (_Pos < _Str.Length - 2 && State != EnumState.Error) SetError(Err.RightNotAllow, _Pos + 1);
                 return (State == EnumState.F);
             }
@@ -2024,6 +2024,9 @@ namespace Dvoryanchikov
             string[] NumInt = null;
             string[] NumDouble = null;
             string[] NumDoubleE = null;
+
+            exp1 = "";
+            exp2 = "";
 
             idConstArr = null;
             idConstArrDo = "";
@@ -2053,10 +2056,6 @@ namespace Dvoryanchikov
                     {
                         NumDoubleE = HelperClass.addIdConstArr(NumDoubleE, idConstArr[i]);
                     }
-                    else if (HelperClass.isLet(idConstArr[i]))
-                    {
-                        Let = HelperClass.addIdConstArr(Let, idConstArr[i]);
-                    }
                     else if (HelperClass.isNumInt(idConstArr[i]))
                     {
                         NumInt = HelperClass.addIdConstArr(NumInt, idConstArr[i]);
@@ -2065,12 +2064,18 @@ namespace Dvoryanchikov
                     {
                         NumDouble = HelperClass.addIdConstArr(NumDouble, idConstArr[i]);
                     }
+                    else if (HelperClass.isLet(idConstArr[i]))
+                    {
+                        Let = HelperClass.addIdConstArr(Let, idConstArr[i]);
+                    }
+
+
 
                 }
             }
-            //if (Let != null)
+            //if (NumInt != null)
             //{
-            //    listBox1.Items.AddRange(Let);
+            //    listBox1.Items.AddRange(NumInt);
             //}
 
             if (logDataGridView1)
@@ -2139,8 +2144,8 @@ namespace Dvoryanchikov
                     dataGridView2.Rows.Add(NumDoubleE[i], "REAL");
                 }
             }
-            label1.Text = exp1;
-            label3.Text = exp1;
+            //label1.Text = exp1;
+            //label3.Text = exp2;
         }
 
         public string[] Identifier(string input)
@@ -2282,7 +2287,7 @@ namespace Dvoryanchikov
                     {
                         returnArr[i] = arr[i];
                     }
-                    returnArr[returnArr.Length - 1] = num;
+                    returnArr[returnArr.Length - 1] = num.Trim();
                 }
                 if (arr == null && num.Length != 0)
                 {
