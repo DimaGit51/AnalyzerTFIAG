@@ -76,7 +76,9 @@ namespace Dvoryanchikov
             SymbolDigit0to9ZeroPointE, // Ожидается символ 0|...|9 или.или space или E
             ErrorIsThen, //Индефикатор не может быть зарезервированным словом!
             ErrorIsLen8,
-            ErrorIsNumInt32
+            ErrorIsNumInt32,
+            ErrorMantis,
+            ErrorIntProgram
 
         }
         public class Result
@@ -107,6 +109,10 @@ namespace Dvoryanchikov
                             { return "^Индефикатор не может быть зарезервированным словом!^"; }
                         case Err.ErrorIsLen8:
                             { return "^Индефикатор не может быть больше 8 символов^"; }
+                        case Err.ErrorMantis:
+                            { return "^В мантиссе больше 15 цифр^"; }
+                        case Err.ErrorIntProgram:
+                            { return "^Внутрення ошибка INT C#^"; }
                         case Err.ErrorIsNumInt32:
                             { return "^Число должно быть в диапозоне -32768 – 32767!^"; }
                         case Err.NoError:
@@ -263,7 +269,6 @@ namespace Dvoryanchikov
                     }
                     else
                     {
-                        int i = _Pos + 1;
                         switch (State)
                         {
                             case EnumState.f1:
@@ -274,7 +279,7 @@ namespace Dvoryanchikov
                                     }
                                     else
                                     {
-                                        SetError(Err.SymbolI, i);
+                                        SetError(Err.SymbolI, _Pos);
                                         State = EnumState.Error;
                                     }
                                     break;
@@ -283,30 +288,30 @@ namespace Dvoryanchikov
                                 {
                                     if (_Str[_Pos] == 'f')
                                     {
-                                        SetError(Err.NoError, i);
-                                        State = EnumState.f4;
+                                        SetError(Err.NoError, _Pos);
+                                        State = EnumState.f3;
                                     }
                                     else
                                     {
-                                        SetError(Err.SymbolF, i);
+                                        SetError(Err.SymbolF, _Pos);
                                         State = EnumState.Error;
                                     }
                                     break;
                                 }
-                            //case EnumState.f3:
-                            //    {
-                            //        if (_Str[_Pos] == ' ')
-                            //        {
-                            //            State = EnumState.f4;
-                            //        }
-                            //        else
-                            //        {
-                            //            State = EnumState.Error;
-                            //            SetError(Err.SymbolSpace, _Pos);
-                            //            // err_Pos = i;
-                            //        }
-                            //        break;
-                            //    }
+                            case EnumState.f3:
+                                {
+                                    if (_Str[_Pos] == ' ')
+                                    {
+                                        State = EnumState.f4;
+                                    }
+                                    else
+                                    {
+                                        State = EnumState.Error;
+                                        SetError(Err.SymbolSpace, _Pos);
+                                        // err_Pos = i;
+                                    }
+                                    break;
+                                }
                             case EnumState.f4:
                                 {
                                     if (_Str[_Pos] == ' ')
@@ -668,6 +673,11 @@ namespace Dvoryanchikov
                                         State = EnumState.Error;
                                         SetError(Err.ErrorIsThen, _Pos - 1);
                                     }
+                                    else if (!HelperClass.isDoubleMantis(idConstArrDo))
+                                    {
+                                        State = EnumState.Error;
+                                        SetError(Err.ErrorMantis, _Pos - 1);
+                                    }
                                     else if(!HelperClass.isLetLenLimit(idConstArrDo))
                                     {
                                         State = EnumState.Error;
@@ -678,6 +688,11 @@ namespace Dvoryanchikov
                                     {
                                         State = EnumState.Error;
                                         SetError(Err.ErrorIsNumInt32, _Pos - 1);
+                                    }
+                                    else if (!HelperClass.isIntLimiting(idConstArrDo))
+                                    {
+                                        State = EnumState.Error;
+                                        SetError(Err.ErrorIntProgram, _Pos - 1);
                                     }
 
 
@@ -1230,6 +1245,16 @@ namespace Dvoryanchikov
                                         State = EnumState.Error;
                                         SetError(Err.ErrorIsNumInt32, _Pos - 1);
                                     }
+                                    else if (!HelperClass.isDoubleMantis(idConstArrDo))
+                                    {
+                                        State = EnumState.Error;
+                                        SetError(Err.ErrorMantis, _Pos - 1);
+                                    }
+                                    else if (!HelperClass.isIntLimiting(idConstArrDo))
+                                    {
+                                        State = EnumState.Error;
+                                        SetError(Err.ErrorIntProgram, _Pos - 1);
+                                    }
                                     else if (_Str[_Pos] == 't')
                                     {
                                         State = EnumState.f23;
@@ -1460,19 +1485,29 @@ namespace Dvoryanchikov
                                     if (!HelperClass.isLetLenLimit(idConstArrDo))
                                     {
                                         State = EnumState.Error;
-                                        SetError(Err.ErrorIsLen8, _Pos - 2);
+                                        SetError(Err.ErrorIsLen8, _Pos - 1);
                                     }
                                     else if (HelperClass.isThen(idConstArrDo))
                                     {
                                         State = EnumState.Error;
-                                        SetError(Err.ErrorIsThen, _Pos - 2);
+                                        SetError(Err.ErrorIsThen, _Pos - 1);
                                     }
                                     else if (!HelperClass.isNumIntLimit(idConstArrDo))
                                     {
                                         State = EnumState.Error;
-                                        SetError(Err.ErrorIsNumInt32, _Pos - 2);
+                                        SetError(Err.ErrorIsNumInt32, _Pos - 1);
                                     }
-                                    if (_Str[_Pos] == ' ')
+                                    else if (!HelperClass.isDoubleMantis(idConstArrDo))
+                                    {
+                                        State = EnumState.Error;
+                                        SetError(Err.ErrorMantis, _Pos - 1);
+                                    }
+                                    else if (!HelperClass.isIntLimiting(idConstArrDo))
+                                    {
+                                        State = EnumState.Error;
+                                        SetError(Err.ErrorIntProgram, _Pos - 1);
+                                    }
+                                    else if (_Str[_Pos] == ' ')
                                     {
                                         State = EnumState.f56;
                                     }
@@ -1872,6 +1907,16 @@ namespace Dvoryanchikov
                                         State = EnumState.Error;
                                         SetError(Err.ErrorIsLen8, _Pos - 1);
                                     }
+                                    else if (!HelperClass.isDoubleMantis(idConstArrDo))
+                                    {
+                                        State = EnumState.Error;
+                                        SetError(Err.ErrorMantis, _Pos - 1);
+                                    }
+                                    else if (!HelperClass.isIntLimiting(idConstArrDo))
+                                    {
+                                        State = EnumState.Error;
+                                        SetError(Err.ErrorIntProgram, _Pos - 1);
+                                    }
                                     else if(_Str[_Pos] == ' ')
                                     {
                                         State = EnumState.f67;
@@ -2144,8 +2189,8 @@ namespace Dvoryanchikov
                     dataGridView2.Rows.Add(NumDoubleE[i], "REAL");
                 }
             }
-            //label1.Text = exp1;
-            //label3.Text = exp2;
+            label1.Text = exp1;
+            label3.Text = exp2;
         }
 
         public string[] Identifier(string input)
@@ -2347,6 +2392,7 @@ namespace Dvoryanchikov
                 {
                     return false;
                 }
+                 
 
                 // Проверка, являются ли целая и дробная части допустимыми целыми числами
                 int integerPart;
@@ -2399,7 +2445,7 @@ namespace Dvoryanchikov
 
             public static bool isLetLenLimit(string str)
             {
-                if (str.Length > 8) {
+                if (str.Length > 8 && !IsAllDigits(str)) {
                     return false;
                 }
                 if (!flaf)
@@ -2408,6 +2454,77 @@ namespace Dvoryanchikov
                 }
                 return true;
             }
+            public static bool isDoubleMantis(string str_)
+            {
+                if (str_ != "")
+                {
+                    string str = "";
+                    if (str_.IndexOf('e') > 0)
+                    {
+                        foreach (char i in str_)
+                        {
+                            if (i == 'e') break;
+                            str += i;
+                        }
+                    }
+
+                    else
+                    {
+                        str = str_;
+                    }
+                    
+                    // Проверка наличия знака
+                    if (str[0] == '+' || str[0] == '-') str = str.Substring(1);
+
+                    if (str.IndexOf('.') > 0)
+                    {
+                        
+                        
+                        string[] parts = str.Split('.');
+
+                        // Проверка наличия только одной точки
+                        if (parts.Length != 2) return false;
+                        if (parts.Length == 2 && (parts[0].Length + parts[1].Length) > 15) return false;
+                    }
+                }
+                if (!flaf)
+                {
+                    flaf = true;
+                }
+                return true;
+            }
+            public static bool IsAllDigits(string str_)
+            {
+                string str1 = str_.Replace("e", "");
+                string str2 = str1.Replace(".", "");
+                foreach (char c in str2.Trim())
+                {
+                    if (!char.IsDigit(c))
+                    {
+                        exp1 = "no";
+                        return false;
+                    }
+                }
+                exp2 = "yes";
+                return true;
+            }
+            public static bool isIntLimiting(string str)
+            {
+                if (isNumInt(str.Trim()))
+                {
+                    double number;
+                    if (double.TryParse(str, out number))
+                    {
+                        if (number > 2147483648 || number < -2147483648 || str.Trim().Length > 20) return false;
+                    }
+                }
+                if (!flaf)
+                {
+                    flaf = true;
+                }
+                return true;
+            }
+
             public static void StrNew()
             {
                 idConstArr = HelperClass.addIdConstArr(idConstArr, idConstArrDo);
